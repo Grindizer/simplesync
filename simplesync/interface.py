@@ -32,3 +32,8 @@ class IStorage(Interface):
     def get(tid):
         """ return result data for task tid """
 
+class ICallable(Interface):
+    """ a task """
+    def __call__():
+        """ """
+
