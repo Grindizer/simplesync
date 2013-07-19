@@ -12,8 +12,8 @@
 
 from zope.interface import Interface
 
-class Hub(Interface):
-    """ a Sasy HUB allow to handle long processing task by switch them into asynchronous task.
+class IHub(Interface):
+    """ a Sasy IHUB allow to handle long processing task by switch them into asynchronous task.
     And is the central point for inquery task status. """
     def asynchrone(ICallable):
         """ add a ICallable object to the list of task handle by this hub and return a task ID."""
@@ -23,4 +23,12 @@ class Hub(Interface):
 
     def get(tid, timeout):
         """ block until task return value or raise exception """
+
+class IStorage(Interface):
+    """ Interface dealing with storing and retrieving results. """
+    def put(tid, data):
+        """ """
+
+    def get(tid):
+        """ return result data for task tid """
 
