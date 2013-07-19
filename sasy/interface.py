@@ -1,8 +1,26 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+#!/usr/bin/python -O
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2012 WALLIX, SARL. All rights reserved.
+#
+# Licensed computer software. Property of WALLIX.
+# Product name: WALLIX Admin Bastion V 3.0
+# Author(s): Nassim Babaci <nbabaci@wallix.com>
+# Id: $Id$
+# URL: $URL$
+# Module description:  $(description)
 
-__author__="nassim"
-__date__ ="$19-Jul-2013 13:30:04$"
+from zope.interface import Interface
 
-if __name__ == "__main__":
-    print "Hello World"
+class Hub(Interface):
+    """ a Sasy HUB allow to handle long processing task by switch them into asynchronous task.
+    And is the central point for inquery task status. """
+    def asynchrone(ICallable):
+        """ add a ICallable object to the list of task handle by this hub and return a task ID."""
+
+    def status(tid):
+        """ return task status """
+
+    def get(tid, timeout):
+        """ block until task return value or raise exception """
+
