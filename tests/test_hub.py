@@ -7,13 +7,14 @@ import time
 # URL: $URL$
 # Module description:  $(description)
 
-
 import unittest, time
 from simplesync import ThreadedHub
 from simplesync import excp
 from simplesync import status
 
-class TestIHub(unittest.TestCase):
+
+
+class TestIHub(object):
 
     def test_asynch_id(self):
         def fct():
@@ -32,7 +33,7 @@ class TestIHub(unittest.TestCase):
         def fct():
             return "data"
 
-        tid = self.obj.aynschrone(fct)
+        tid = self.obj.asynchrone(fct)
         self.obj.get(tid, remove=False)
         self.assertEqual(status.SUCCESS, self.obj.status(tid))
 
@@ -40,7 +41,7 @@ class TestIHub(unittest.TestCase):
         def fct():
             raise Exception, "an error"
 
-        tid = self.obj.aynschrone(fct)
+        tid = self.obj.asynchrone(fct)
         self.assertRaises(Exception, self.obj.get, (tid,), {'remove': False})
         self.assertEqual(status.FAIL, self.obj.status(tid))
 
@@ -50,7 +51,7 @@ class TestIHub(unittest.TestCase):
             while not stop:
                 time.sleep(0.1)
 
-        tid = self.obj.aynschrone(fct)
+        tid = self.obj.asynchrone(fct)
         st = self.obj.status(tid)
         stop = True
         self.assertEqual(status.RUNNING, st)
@@ -59,11 +60,11 @@ class TestIHub(unittest.TestCase):
         def fct():
             return "data"
 
-        tid = self.obj.aynschrone(fct)
+        tid = self.obj.asynchrone(fct)
         d = self.obj.get(tid)
         self.assertEqual("data", d)
 
-class TestThreadedHub(unittest.TestCase):
+class TestThreadedHub(TestIHub, unittest.TestCase):
     def setUp(self):
         class MemDico(object):
             def __init__(self):

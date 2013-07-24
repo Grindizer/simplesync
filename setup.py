@@ -1,9 +1,11 @@
 from setuptools import setup, find_packages
 import sys, os
 
+
+sys.path.insert(0, os.path.dirname(__file__))
 version = '0.0'
 
-setup(name='sasy',
+setup(name='simplesync',
       version=version,
       description="one-line desc",
       long_description="""\
@@ -20,6 +22,7 @@ long_desc""",
       install_requires=[
           # -*- Extra requirements: -*-
       ],
+      test_suite="tests",
       entry_points="""
       # -*- Entry points: -*-
       """,
