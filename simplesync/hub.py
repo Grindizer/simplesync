@@ -19,8 +19,6 @@ from threading import Thread, current_thread
 class HubBase(object):
     def __init__(self, storage):
         self.storage = storage
-        self._tasks = {}
-        self._thread = {}
         
     def asynchrone(self, task):
         if not callable(task):
@@ -28,6 +26,12 @@ class HubBase(object):
 
 class ThreadedHub(HubBase):
     implements(IHub)
+    adapts(IStorage)
+    
+    def __init__(self, storage):
+        super(ThreadedHub, self).__init__(storage)
+        self._tasks = {}
+        self._thread = {}
     
     def asynchrone(self, task):
         """ run task in a thread and return an Id for that task""" 
@@ -35,18 +39,16 @@ class ThreadedHub(HubBase):
         
         def MyThread():
             _id = current_thread().ident
-            self._tasks[_id] = {'status': 0}
             try:
                 result = task()
             except Exception, e:
-                self._tasks[_id].update({'status': 1})
                 self.storage.put(_id, e)
             else:
-                self._tasks[_id].update({'status': 2})
                 self.storage.put(_id, result)
         
         task_thread = Thread(target=MyThread)
         task_thread.start()
+        
         ident = task_thread.ident
         self._thread[ident] = task_thread
         
@@ -63,5 +65,11 @@ class ThreadedHub(HubBase):
         # result not ready yet because MyThread return between self._task[_id] =, and self.storage.put ... 
         # may be remove _task, and use only self.storage.
         return self.storage.get(task)
+    
+    def status(self, task):
+        if self._thread.get(task, None) is None:
+            #TODO: replace this with a excp exception.
+            raise Exception, "Task not registered"
+        # ... time to go bed ! grrr
         
             
