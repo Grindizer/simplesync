@@ -43,7 +43,18 @@ class TestIHub(object):
 
         tid = self.obj.asynchrone(fct)
         self.assertRaises(Exception, self.obj.get, (tid,), {'remove': False})
+        # perform a get on obj so we can be sure result is ready.
+        try:
+            self.obj.get(tid, remove=False)
+        except:
+            pass
         self.assertEqual(status.FAIL, self.obj.status(tid))
+
+    def test_status_fail_after_remove_true(self):
+        pass
+
+    def test_status_success_after_remove_true(self):
+        pass
 
     def test_status_running(self):
         stop = False
@@ -73,11 +84,13 @@ class TestThreadedHub(TestIHub, unittest.TestCase):
             def put(self, tid, data):
                 self._s[tid] = data
 
-            def get(self, tid, remove=True):
+            def get(self, tid):
                 r = self._s.get(tid, None)
-                if tid in self._s and remove:
-                    del self._s[tid]
                 return r
+
+            def delete(self, tid):
+                if tid in self._s:
+                    del self._s[tid]
 
         storage = MemDico()
         self.obj = ThreadedHub(storage)

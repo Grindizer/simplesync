@@ -21,7 +21,7 @@ class IHub(Interface):
     def status(tid):
         """ return task status """
 
-    def get(tid, timeout):
+    def get(tid, timeout, remove):
         """ block until task return value or raise exception """
 
 class IStorage(Interface):
@@ -31,6 +31,9 @@ class IStorage(Interface):
 
     def get(tid):
         """ return result data for task tid """
+
+    def delete(tid):
+        """ delete the tid atsk result from storage """
 
 class ICallable(Interface):
     """ a task """
