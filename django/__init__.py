@@ -1,0 +1,4 @@
+
+
+class SimpleSyncMiddleWare(object):
+    pass

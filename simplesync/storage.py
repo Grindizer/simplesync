@@ -8,7 +8,11 @@
 # URL: $URL$
 # Module description:  $(description)
 
+from interface import IStorage
+from zope.interface import implements
+
 class MemDico(object):
+    implements(IStorage)
     """ a dummy and no efficient implementatioàn of IStorage, used mainly
         for testing purpouse """
     def __init__(self):
