@@ -1,11 +1,8 @@
-import threading
 #!/usr/bin/python -O
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2012 WALLIX, SARL. All rights reserved.
 #
 # Licensed computer software. Property of WALLIX.
-# Product name: WALLIX Admin Bastion V 3.0
 # Author(s): Nassim Babaci <nbabaci@wallix.com>
 # Id: $Id$
 # URL: $URL$
@@ -16,13 +13,14 @@ from excp import CannotRegisterObject
 import status
 from zope.component import adapts
 from zope.interface import implements
-from threading import Thread, current_thread
+from threading import Thread, current_thread, Event
 
 class HubBase(object):
     def __init__(self, storage):
         self.storage = storage
         
     def asynchrone(self, task):
+        # TODO test againt ICallable interface
         if not callable(task):
             raise CannotRegisterObject, "Object {0} is not callable".format(task)
 
@@ -38,7 +36,7 @@ class ThreadedHub(HubBase):
         """ run task in a thread and return an Id for that task""" 
         super(ThreadedHub, self).asynchrone(task)
 
-        _in_active_threads = threading.Event()
+        _in_active_threads = Event()
         def MyThread():
             _id = current_thread().ident
             _in_active_threads.wait()
