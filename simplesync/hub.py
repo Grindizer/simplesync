@@ -1,9 +1,6 @@
 #!/usr/bin/python -O
 # -*- coding: utf-8 -*-
 #
-#
-# Licensed computer software. Property of WALLIX.
-# Author(s): Nassim Babaci <nbabaci@wallix.com>
 # Id: $Id$
 # URL: $URL$
 # Module description:  $(description)
